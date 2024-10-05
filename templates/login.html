@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block head %} <title>Login Page</title>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %} 
+{% block body %}
+<header>
+<div class="nav">
+    <div class="nav-logo"><p>DongHwa Suck</p></div>
+    <nav class="nav-button">
+        <button class="topBtn" id="loginBtn">Login</button>
+        <button class="topBtn" id="registerBtn">Sign Up</button>
+    </nav>
+</div>
+</header>
+    <div class = "wrapper">
+        
+        <form action ="">
+            <h1>Login</h1>
+
+            <div class="input-box">
+                <input type ="text" placeholder="Username" required>
+                <i class='bx bxs-user'></i>
+            </div>
+
+            <div class="input-box">
+                <input type ="password" placeholder="Password" required>
+                <i class='bx bxs-lock-alt' ></i>
+            </div>
+
+            <div class="remember-forgot">
+                <label><input type ="checkbox"> Remember Me</label>
+                <a href="#">Forgot password?</a>
+            </div>
+
+            <button type = "submit" class="btn">Login</button>
+
+            <div class="register-link">
+                <p>Dont't have an account?<a href="#"> Sign Up</a></p>
+                
+            </div>
+        </form>
+    </div>
+{% endblock %}

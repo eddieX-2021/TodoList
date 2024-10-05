@@ -1,3 +1,35 @@
-{%extends 'base.html'%} {% block head %} Main {% endblock %} {% block body %}
-<h1>Eddie's todo list</h1>
+{%extends 'base.html'%} 
+{% block head %} <title >Main</title> <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>{% endblock %} 
+{% block body %}
+<div class="header">
+    <div class="page-logo"><p>Eddie's TodoList</p></div>
+    <div class="main-logo"><p>DongHwa Suck</p></div>
+    <div class="button-main">
+        <button class="btn-main" id="alterBtn"><i class='bx bx-bell'></i></button>
+        <button class="btn-main" id="settingBtn"><i class='bx bxs-cog'></i></button>
+    </div>
+</div>
+<div class="calendar">
+    
+        <button class="btn-calendar" id="calendarBtn">Calendar</button>
+    
+</div>
+<div class="container">
+    <div class="to-do">
+        <h1>To do</h1>
+        <button class="new-task" id ="todoBtn">+ Add a Task</button>
+    </div>
+    <div class="doing">
+        <h1>Doing</h1>
+        <button class="new-task" id ="doingBtn">+ Add a Task</button>
+    </div>
+    <div class="done">
+        <h1>Done</h1>
+        <button class="new-task" id ="doneBtn">+ Add a Task</button>
+    </div>
+    <div class="new-cat"></div>
+        <button class="new-category" id ="newCatBtn">+ Add another Category</button>
+    </div>
+
+</div>
 {% endblock %}
