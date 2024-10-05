@@ -1,6 +1,10 @@
 {%extends 'base.html'%} 
-{% block head %} <title >Main</title> <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>{% endblock %} 
+{% block head %} <title >Main</title> <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+{% endblock %} 
 {% block body %}
+<!-- top nav -->
 <div class="header">
     <div class="page-logo"><p>Eddie's TodoList</p></div>
     <div class="main-logo"><p>DongHwa Suck</p></div>
@@ -9,12 +13,22 @@
         <button class="btn-main" id="settingBtn"><i class='bx bxs-cog'></i></button>
     </div>
 </div>
+
+<!-- calender part -->
 <div class="calendar">
     
         <button class="btn-calendar" id="calendarBtn">Calendar</button>
-    
+     
 </div>
-<div class="container">
+
+
+<div id="calendarContainer" class="calendar-container" style="display: none;">
+    <!-- You can integrate a calendar widget here, e.g., using a datepicker library -->
+    <p>This is a placeholder for the calendar</p>
+</div>
+
+<!-- Task space-->
+<div class="container" data-toggle="original">
     <div class="to-do">
         <h1>To do</h1>
         <button class="new-task" id ="todoBtn">+ Add a Task</button>
@@ -32,4 +46,39 @@
     </div>
 
 </div>
+
+<!-- Adding Tasks -->
+<div class="modal" id="taskModal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn" id="closeModal">&times;</span>
+        <h2>Add a Task</h2>
+        <form id="taskForm">
+            <div class="form-group">
+                <label for="taskName">Task Name:</label>
+                <input type="text" id="taskName" name="taskName" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="taskLabel">Label:</label>
+                <input type="text" id="taskLabel" name="taskLabel" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="taskDetails">Details:</label>
+                <textarea id="taskDetails" name="taskDetails" required></textarea>
+            </div>
+        
+            <!-- New Calendar Input -->
+            <div class="form-group">
+                <label for="taskDate">Due Date:</label>
+                <input type="date" id="taskDate" name="taskDate" required>
+            </div>
+            
+            <button type="submit">Add Task</button>
+        </form>
+        
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %}
