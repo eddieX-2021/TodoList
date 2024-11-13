@@ -1,46 +1,97 @@
-from flask import Flask, render_template, url_for,request, jsonify
+from flask import Flask, render_template, url_for,request, jsonify,session,redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-import sqlite3
+from werkzeug.security import generate_password_hash, check_password_hash 
 
 app = Flask(__name__, static_folder='static')
+#set up the database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
+app.config['SECRET_KEY'] ='secret key'
 db = SQLAlchemy(app)
-#db.init_app(app)
 
-def create_table():
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    c.execute('''
-    CREATE TABLE IF NOT EXISTS tasks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            label TEXT NOT NULL,
-            details TEXT NOT NULL,
-            due_date DATE
-        )
-''')#questiion here how to handle NULL
-    conn.commit()
-    conn.close()
+#created a modelk
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key= True)
+    name = db.Column(db.String(100),nullable = False)
+    username = db.Column(db.String(100),nullable = False,unique = True)
+    password = db.Column(db.String(200),nullable = False)
+    date_added = db.Column(db.DateTime,default = datetime.utcnow)
 
-#connect to the database
-def get_db_connection():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
 
-#login page
+
+class Task(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)  # Ensure this is not NULL
+    label = db.Column(db.String(100), nullable=False)  # Ensure this is not NULL
+    details = db.Column(db.String(200), nullable=False)  # Ensure this is not NULL
+    due_date = db.Column(db.DateTime, default=datetime.utcnow)
+
+# home page
 @app.route('/')
-def login():
-    return (render_template("login.html"))
+def home():
+    if 'username' in session:
+        return render_template("home.html",username=session['username'])
+    else:
+        return redirect(url_for('login'))
 
-#page for main page
-@app.route('/main')
-def index():
-    conn = get_db_connection()
-    tasks = conn.execute('SELECT * FROM tasks').fetchall()
-    conn.close()
-    return render_template('index.html', tasks=tasks)
+# login page
+@app.route('/login', methods=['GET','POST'])
+def login():
+    # check post request
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        #get the user
+        user = User.query.filter_by(username=username).first()
+        if user and check_password_hash(user.password, password):  # Verify password
+            session['username'] = user.name  # assume this is the user in this session
+            return redirect(url_for('home'))  # now he can access home page
+        else:
+            return render_template("login.html", error="Invalid username or password") # incrrect passord or wrong username give errors 
+        
+    else:
+        return render_template("login.html")
+
+
+@app.route('/register', methods=['GET','POST'])
+def register():
+    if request.method == 'POST':
+        name = request.form['name']
+        username = request.form['username']
+        password = request.form['password']
+        #check if the username is already taken
+        exist_user = User.query.filter(User.username == username).first()
+        if exist_user:
+            return render_template("register.html", error = "Username already exists")
+        #if not, then create a new user in the database
+        hashed_password = generate_password_hash(password)
+        new_user = User(name = name,  username=username, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        #then redirect to login page
+        return redirect(url_for('login'))
+        
+        
+
+    return render_template("register.html")
+
+
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.clear()  # Clear the session
+    return redirect(url_for('login'))
+
+
+
+
+# #page for main page
+# @app.route('/main')
+# def index():
+#     conn = get_db_connection()
+#     tasks = conn.execute('SELECT * FROM tasks').fetchall()
+#     conn.close()
+#     return render_template('index.html', tasks=tasks)
 
 
 @app.route('/add-task', methods=['POST'])
@@ -57,14 +108,10 @@ def add_task():
     conn.close
     return jsonify({'message': 'Task added successfully!'})
 
-class Task(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(200), nullable=False)#don't want to be empty
-    due_date = db.Column(db.DateTime, default = datetime.utcnow)
-    user_id = db.Column(db.Integer, nullable=False)  # If you're adding user authentication
 
-    def __repr__(self):
-        return '<Task %r>' % self.id
 if __name__ == '__main__':
-    create_table()
+
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
     app.run(debug=True)

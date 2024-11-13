@@ -16,13 +16,6 @@ body {
     background-position: center;*/
 }
 
-.error-message {
-    margin-top: 20px;
-    text-align: center;
-    color: red;
-    /* Center the text */
-}
-
 header {
     display: flex;
     justify-content: center;

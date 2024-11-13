@@ -10,7 +10,18 @@
     <div class="main-logo"><p>DongHwa Suck</p></div>
     <div class="button-main">
         <button class="btn-main" id="alterBtn"><i class='bx bx-bell'></i></button>
-        <button class="btn-main" id="settingBtn"><i class='bx bxs-cog'></i></button>
+        
+        <!-- Dropdown for settings -->
+        <div class="dropdown">
+            <button class="btn-main" id="settingBtn" onclick="toggleDropdown()">
+                <i class='bx bxs-cog'></i>
+            </button>
+            <div id="dropdownMenu" class="dropdown-content" style="display: none;">
+                <form action="{{ url_for('logout') }}" method="POST">
+                    <button type="submit" class="dropdown-item">Logout</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
