@@ -1,8 +1,9 @@
 {%extends 'base.html'%} 
 {% block head %} <title >Main</title> <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-
-{% endblock %} 
+<!-- Include FullCalendar CSS -->
+<link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.css' rel='stylesheet' />
+{% endblock %}
 {% block body %}
 <!-- top nav -->
 <div class="header">
@@ -23,7 +24,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>  
 
 <!-- calender part -->
 <div class="calendar">
@@ -33,29 +34,74 @@
 </div>
 
 
+
+
 <div id="calendarContainer" class="calendar-container" style="display: none;">
     <!-- You can integrate a calendar widget here, e.g., using a datepicker library -->
-    <p>This is a placeholder for the calendar</p>
+    <div id="calendar"></div>
 </div>
 
 <!-- Task space-->
 <div class="container" data-toggle="original">
     <div class="to-do">
         <h1>To do</h1>
-        <button class="new-task" id ="todoBtn">+ Add a Task</button>
-    </div>
-    <div class="doing">
-        <h1>Doing</h1>
-        <button class="new-task" id ="doingBtn">+ Add a Task</button>
-    </div>
-    <div class="done">
-        <h1>Done</h1>
-        <button class="new-task" id ="doneBtn">+ Add a Task</button>
-    </div>
-    <div class="new-cat"></div>
-        <button class="new-category" id ="newCatBtn">+ Add another Category</button>
+        <button class="new-task" id="todoBtn" data-category="to-do">+ Add a Task</button>
+        {% for task in tasks %}
+            {% if task.category == 'to-do' %}
+                <div class="task">
+                    <div class="task-header">
+                        <span class="task-name">{{ task.name }}</span>
+                        <span class="task-label">{{ task.label }}</span>
+                    </div>
+                    <div class="task-details">{{ task.details }}</div>
+                    <div class="task-footer">
+                        <span class="due-date">{{ task.due_date.strftime('%Y-%m-%d') }}</span>
+                        <button class="delete-task" data-id="{{ task.id }}">Delete</button>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
 
+    <div class="doing">
+        <h1>Doing</h1>
+        <button class="new-task" id="doingBtn" data-category="doing">+ Add a Task</button>
+        {% for task in tasks %}
+            {% if task.category == 'doing' %}
+                <div class="task">
+                    <div class="task-header">
+                        <span class="task-name">{{ task.name }}</span>
+                        <span class="task-label">{{ task.label }}</span>
+                    </div>
+                    <div class="task-details">{{ task.details }}</div>
+                    <div class="task-footer">
+                        <span class="due-date">{{ task.due_date.strftime('%Y-%m-%d') }}</span>
+                        <button class="delete-task" data-id="{{ task.id }}">Delete</button>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="done">
+        <h1>Done</h1>
+        <button class="new-task" id="doneBtn" data-category="done">+ Add a Task</button>
+        {% for task in tasks %}
+            {% if task.category == 'done' %}
+                <div class="task">
+                    <div class="task-header">
+                        <span class="task-name">{{ task.name }}</span>
+                        <span class="task-label">{{ task.label }}</span>
+                    </div>
+                    <div class="task-details">{{ task.details }}</div>
+                    <div class="task-footer">
+                        <span class="due-date">{{ task.due_date.strftime('%Y-%m-%d') }}</span>
+                        <button class="delete-task" data-id="{{ task.id }}">Delete</button>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 </div>
 
 <!-- Adding Tasks -->
@@ -63,7 +109,7 @@
     <div class="modal-content">
         <span class="close-btn" id="closeModal">&times;</span>
         <h2>Add a Task</h2>
-        <form id="taskForm">
+        <form id="taskForm" method="POST">
             <div class="form-group">
                 <label for="taskName">Task Name:</label>
                 <input type="text" id="taskName" name="taskName" required>
@@ -91,5 +137,8 @@
     </div>
 </div>
 
+<!-- Include FullCalendar JS -->
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+<!-- Include your custom script.js -->
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %}

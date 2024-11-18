@@ -25,12 +25,17 @@ class Task(db.Model):
     label = db.Column(db.String(100), nullable=False)  # Ensure this is not NULL
     details = db.Column(db.String(200), nullable=False)  # Ensure this is not NULL
     due_date = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    category = db.Column(db.String(50), nullable=False) 
 
 # home page
 @app.route('/')
 def home():
+    #return render_template("home.html")
     if 'username' in session:
-        return render_template("home.html",username=session['username'])
+        user_id = session.get('user_id') 
+        tasks = Task.query.filter_by(user_id=user_id).all()
+        return render_template("home.html",username=session['username'],tasks = tasks)
     else:
         return redirect(url_for('login'))
 
@@ -45,6 +50,7 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and check_password_hash(user.password, password):  # Verify password
             session['username'] = user.name  # assume this is the user in this session
+            session['user_id'] = user.id
             return redirect(url_for('home'))  # now he can access home page
         else:
             return render_template("login.html", error="Invalid username or password") # incrrect passord or wrong username give errors 
@@ -96,22 +102,77 @@ def logout():
 
 @app.route('/add-task', methods=['POST'])
 def add_task():
-    task_name = request.form['taskName']
-    task_label = request.form['taskLabel']
-    task_details = request.form['taskDetails']
-    task_date = request.form['taskDate']
 
-    conn = get_db_connection()
-    conn.execute('INSERT INTO tasks (name, label, details, due_date) VALUES (?, ?, ?, ?)',
-                 (task_name, task_label, task_details, task_date))
-    conn.commit()
-    conn.close
-    return jsonify({'message': 'Task added successfully!'})
+    if request.method == 'POST':
+        task_name = request.form['taskName']
+        task_label = request.form['taskLabel']
+        task_details = request.form['taskDetails']
+        task_date = request.form['taskDate']
+        task_category = request.form['taskCategory']
 
+        if not task_name or not task_label or not task_details:
+            return jsonify({'error': 'All fields are required!'}), 400
+        
+        try:
+            due_date = datetime.strptime(task_date, '%Y-%m-%d')
+        except ValueError:
+            return jsonify({'error': 'Invalid date format!'}), 400
+        
+        user_id = session.get('user_id')
+        new_task = Task(
+            name=task_name,
+            label=task_label,
+            details=task_details,
+            due_date=due_date,
+            user_id=user_id,
+            category=task_category  # Include the category
+        )
+        db.session.add(new_task)
+        db.session.commit()
+        #then redirect to login page
+        return jsonify({
+            'message': 'Task added successfully!',
+            'task': {
+                'id': new_task.id,
+                'name': new_task.name,
+                'details': new_task.details,
+                'due_date': new_task.due_date.strftime('%Y-%m-%d'),
+                'label': new_task.label,
+                'category': new_task.category  # Include category in the response
+            }
+        })
+    
+
+@app.route('/delete-task/<int:task_id>', methods=['DELETE'])
+def delete_task(task_id):
+    task = Task.query.get(task_id)  # Get the task by ID
+    if task:
+        db.session.delete(task)  # Delete the task from the database
+        db.session.commit()  # Commit the changes
+        return jsonify({'message': 'Task deleted successfully!'}), 200
+    return jsonify({'error': 'Task not found!'}), 404
+    
+
+@app.route('/get-tasks', methods=['GET'])
+def get_tasks():
+    user_id = session.get('user_id')
+    tasks = Task.query.filter_by(user_id=user_id).all()
+    
+    events = []
+    for task in tasks:
+        events.append({
+            'title': task.name,  # Task name
+            'start': task.due_date.strftime('%Y-%m-%d'),  # Due date
+            'description': task.details,  # Optional: Add more details if needed
+            'id': task.id  # Optional: Add task ID for further actions
+        })
+    
+    return jsonify(events)  # Return the events as JSON
+#testing id: eddiexiao2019, pw: eddie1234
 
 if __name__ == '__main__':
 
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
+    # with app.app_context():
+    #     db.drop_all()
+    #     db.create_all()
     app.run(debug=True)

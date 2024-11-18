@@ -15,9 +15,12 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    background: seagreen;
     min-height: 100vh;
     overflow: hidden;
+    /*credit pexels for images*/
+    background-image: url('../images/main2.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 .header {
@@ -28,13 +31,12 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: purple;
     padding: 0 20px;
     z-index: 10;
 }
 
 .header p {
-    color: white;
+    color: black;
     font-size: 25px;
     font-weight: 600;
 }
@@ -47,8 +49,11 @@ body {
 }
 
 .main-logo {
-    flex-grow: 1;
+    position: absolute;
     justify-content: center;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 25px;
 }
 
 .button-main {
@@ -61,7 +66,7 @@ body {
 .btn-main {
     margin-left: 10px;
     background-color: white;
-    color: purple;
+    color: teal;
     border: none;
     width: 40px;
     height: 40px;
@@ -93,7 +98,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: lightgray;
     z-index: 5;
 }
 
@@ -101,7 +105,7 @@ body {
     margin-left: auto;
     padding: 10px 15px;
     margin-right: 10px;
-    background-color: purple;
+    background-color: teal;
     color: white;
     border: none;
     border-radius: 5px;
@@ -111,7 +115,7 @@ body {
 }
 
 .btn-calendar:hover {
-    background-color: #3e3e9a;
+    background-color: #4A9E9C;
 }
 
 .dropdown {
@@ -161,13 +165,13 @@ body {
     width: 100%;
     flex-grow: 1;
     padding: 20px;
-    background: white;
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
     gap: 10px;
     overflow: hidden;
     height: calc(100vh - 120px);
+
 }
 
 .to-do,
@@ -190,7 +194,7 @@ body {
 .new-category {
     margin-top: 10px;
     padding: 10px;
-    background-color: purple;
+    background-color: teal;
     color: white;
     border: none;
     border-radius: 5px;
@@ -203,7 +207,7 @@ body {
 
 .new-task:hover,
 .new-category:hover {
-    background-color: #3e3e9a;
+    background-color: #4A9E9C;
 }
 
 .modal {
@@ -277,7 +281,7 @@ body {
 .modal-content button[type="submit"] {
     width: 100%;
     padding: 10px;
-    background-color: purple;
+    background-color: teal;
     color: white;
     font-size: 16px;
     border: none;
@@ -287,7 +291,7 @@ body {
 }
 
 .modal-content button[type="submit"]:hover {
-    background-color: #3e3e9a;
+    background-color: #4A9E9C;
 }
 
 
@@ -306,4 +310,93 @@ body {
 .close-btn:hover {
     color: red;
     /* Change the color when hovered */
+}
+
+
+
+.task {
+    background-color: white;
+    /* Background color for the task */
+    border: 1px solid black;
+    /* Border for the task */
+    border-radius: 10px;
+    /* Rounded corners */
+    padding: 10px;
+    /* Padding inside the task */
+    margin: 10px;
+    /* Margin around the task */
+    width: auto;
+    /* Fixed width for the task */
+    height: 200px;
+    /* Fixed height for the task */
+    display: flex;
+    /* Use flexbox for layout */
+    flex-direction: column;
+    /* Stack children vertically */
+    justify-content: space-between;
+    /* Space out children */
+}
+
+.task-header {
+    display: flex;
+    /* Use flexbox for header layout */
+    justify-content: space-between;
+    /* Space out name and label */
+    align-items: center;
+    /* Center items vertically */
+}
+
+.task-name {
+    font-weight: bold;
+    font-size: 20px;
+    /* Make task name bold */
+}
+
+.task-details {
+    margin-top: 5px;
+    /* Space between name/label and details */
+    flex-grow: 1;
+    /* Allow details to take up remaining space */
+}
+
+.task-footer {
+    display: flex;
+    /* Use flexbox for footer layout */
+    justify-content: space-between;
+    /* Space out due date and delete button */
+    align-items: center;
+    /* Center items vertically */
+    margin-top: 10px;
+    /* Space above the footer */
+}
+
+.task-footer .due-date {
+    font-size: 0.9em;
+    /* Slightly smaller font for due date */
+    color: #555;
+    /* Lighter color for due date */
+}
+
+.delete-task {
+    background-color: teal;
+    /* Teal background color */
+    color: white;
+    /* White text color */
+    border: none;
+    /* No border */
+    border-radius: 10px;
+    /* Rounded corners */
+    padding: 10px 15px;
+    /* Padding for the button */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+    font-size: 14px;
+    /* Font size for the button */
+    transition: background-color 0.3s;
+    /* Transition for hover effect */
+}
+
+.delete-task:hover {
+    background-color: #4A9E9C;
+    /* Darker teal on hover */
 }
