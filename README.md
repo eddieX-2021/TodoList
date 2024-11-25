@@ -9,12 +9,12 @@ This is a web-based To-Do List application designed to help users track their ta
 - Add, edit, and delete tasks
 - Visual representation of completed and pending tasks
 - User-friendly interface with HTML, CSS, and JavaScript
-- Database-backed task storage using SQL
+- Database-backed task storage and user login info storage using SQL
+- Backend powered by Flask
 
 ## Upcoming Features
 
-- **User Authentication**: Implementation of login and sign-up functionality with a database for user management
-- **Task Categorization**: Separate tasks by categories for better organization (coming soon)
+- **Calendar Update**: Visualize tasks on a calendar
 - **Improved UX/UI**: Enhancements to the overall user experience and design
 
 ## Technologies Used
@@ -25,12 +25,27 @@ This is a web-based To-Do List application designed to help users track their ta
 
 ## Demo
 
-- A demo of the application is coming soon!
+### Sign-Up Page
+![Sign-Up Page](C:/Users/eddie/OneDrive/Documents/eddiePorject/TodoList/Signup.png)
+
+### Login Page
+![Login Page](C:/Users/eddie/OneDrive/Documents/eddiePorject/TodoList/login.png)
+
+### Main Page
+![Main Page](C:/Users/eddie/OneDrive/Documents/eddiePorject/TodoList/main.png)
+
+### Add Task Page
+![Add Task Page](C:/Users/eddie/OneDrive/Documents/eddiePorject/TodoList/add%20task.png)
 
 ## How to Run
 
-1. Clone this repository.
-2. Install dependencies:
+1. Clone this repository:
    ```bash
+   git clone <repository-url>
+2 Navigate to the project directory:
+   cd TodoList
+3 Install dependencies:
    pip install -r requirements.txt
-run python app.py
+4 Run the application:
+   python app.py
+5 Open your web browser and navigate to http://localhost:5000
