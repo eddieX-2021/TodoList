@@ -26,16 +26,16 @@ This is a web-based To-Do List application designed to help users track their ta
 ## Demo
 
 ### Sign-Up Page
-![Sign-Up Page](C:/Users/eddie/OneDrive/Documents/eddiePorject/TodoList/Signup.png)
+![Sign-Up Page](Signup.png)
 
 ### Login Page
-![Login Page](C:/Users/eddie/OneDrive/Documents/eddiePorject/TodoList/login.png)
+![Login Page](login.png)
 
 ### Main Page
-![Main Page](C:/Users/eddie/OneDrive/Documents/eddiePorject/TodoList/main.png)
+![Main Page](main.png)
 
 ### Add Task Page
-![Add Task Page](C:/Users/eddie/OneDrive/Documents/eddiePorject/TodoList/add%20task.png)
+![Add Task Page](add%20task.png)
 
 ## How to Run
 
